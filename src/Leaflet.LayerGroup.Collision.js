@@ -6,20 +6,21 @@ function extensions(parentClass) { return {
 
 	initialize: function (arg1, arg2) {
 		var options;
-		if (parentClass === L.GeoJSON) {
-			parentClass.prototype.initialize.call(this, arg1, arg2);
-			options = arg2;
-		} else {
-			parentClass.prototype.initialize.call(this, arg1);
-			options = arg1;
-		}
 		this._originalLayers = [];
 		this._visibleLayers = [];
 		this._staticLayers = [];
 		this._rbush = [];
 		this._cachedRelativeBoxes = [];
-		this._margin = options.margin || 0;
 		this._rbush = null;
+		if (parentClass === L.GeoJSON) {
+			options = arg2;
+			this._margin = options.margin || 0;
+			parentClass.prototype.initialize.call(this, arg1, arg2);
+		} else {
+			options = arg1;
+			this._margin = options.margin || 0;
+			parentClass.prototype.initialize.call(this, arg1);
+		}
 	},
 
 	addLayer: function(layer) {
